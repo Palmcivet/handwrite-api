@@ -94,7 +94,7 @@ void Stop()
 void setup()
 {
 	pinMode(stepper_1, OUTPUT);
-	myservo.attach(port_servo);
+	myservo.attach(servo);
 	pinMode(sensor_L1_D, INPUT);
 	pinMode(sensor_L2_D, INPUT);
 	pinMode(sensor_R2_D, INPUT);
