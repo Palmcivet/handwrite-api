@@ -1,15 +1,14 @@
 /**
  * title: the Code to Mentally Car
  * author: Palm Civet
- * version: 1.0
+ * version: 1.1
  * Comment: 
  */
 #include <Servo.h>
-Servo myservo;
+#define black 1		// HIGH
+#define white 0		// LOW
 
-// define the signal of sensor.
-const int black = 1; // HIGH
-const int white = 0; // LOW
+Servo myservo;
 
 // define PWM port.
 const int servo = 9;
