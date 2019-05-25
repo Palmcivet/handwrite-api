@@ -1,6 +1,8 @@
 /**
  * title: the Code to Mentally Car
  * author: Palm Civet
+ * version: 1.0
+ * Comment: 
  */
 #include <Servo.h>
 Servo myservo;
@@ -14,7 +16,7 @@ const int servo = 9;
 const int stepper_1 = 10; // HIGH
 const int stepper_2 = 11; // LOW
 
-// define the port of sensor and the value of port.
+// define the digital port of sensor and the value of port.
 const int sensor_L1_D = 13;
 const int sensor_L2_D = 12;
 const int sensor_R2_D = 8;
@@ -25,7 +27,8 @@ int val_L2_D;
 int val_R2_D;
 int val_R1_D;
 
-// TODO
+// TODO below ===================
+// define the analog port of sensor and the value of port.
 const int sensor_L1_A = A0;
 const int sensor_L2_A = A1;
 const int sensor_R2_A = A2;
@@ -36,13 +39,14 @@ int val_L2_A;
 int val_R2_A;
 int val_R1_A;
 
-// TODO
 // to verify the angles.
 const int angle_mid = 90;
 const int angle_left = 10;
-const int angle_right = 80;
+const int angle_right = 170;
 
 int angle_chge;
+
+// TODO above ===================
 
 void superturnL()
 {
@@ -91,17 +95,19 @@ void setup()
 {
 	pinMode(stepper_1, OUTPUT);
 	myservo.attach(port_servo);
-	myservo.write(angle_mid);
 	pinMode(sensor_L1_D, INPUT);
 	pinMode(sensor_L2_D, INPUT);
 	pinMode(sensor_R2_D, INPUT);
 	pinMode(sensor_R1_D, INPUT);
-	
+
+	// TODO
 	pinMode(sensor_L1_A, INPUT);
 	pinMode(sensor_L2_A, INPUT);
 	pinMode(sensor_R2_A, INPUT);
 	pinMode(sensor_R1_A, INPUT);
 	Serial.begin(9600);
+	
+	void strT();
 }
 
 void loop()
@@ -113,6 +119,7 @@ void loop()
 	val_R2_D = digitalRead(sensor_R2_D);
 	val_R1_D = digitalRead(sensor_R1_D);
 
+	// TODO
 	val_L1_A = digitalRead(sensor_L1_A);
 	val_L2_A = digitalRead(sensor_L2_A);
 	val_R2_A = digitalRead(sensor_R2_A);
@@ -131,35 +138,32 @@ void loop()
      * white - LOW  - 0 - on
      */
 
-	if ((val_L1 || val_L2) == 1)
+	if ((val_L1_D & val_L2_D & val_R2_D & val_R1_D) == black)
 	{
-		if (val_L1 == 1)
+		Stop();
+	}
+
+	if ((val_L1_D || val_L2_D) == black)
+	{
+		if (val_L1_D == black)
 		{
 			superturnL();
 		}
-		if (val_L2 == 1)
+		if (val_L2_D == black)
 		{
 			turnL();
 		}
-		if ((val_L1 & val_L2 & val_R2 & val_R1) == 1)
-		{
-			Stop();
-		}
 	}
 
-	if ((val_R2 || val_R1) == 1)
+	if ((val_R2_D || val_R1_D) == black)
 	{
-		if (val_R1 == 1)
+		if (val_R1_D == black)
 		{
 			superturnR();
 		}
-		if (val_R2 == 1)
+		if (val_R2_D == black)
 		{
 			turnR();
-		}
-		if ((val_L1 & val_L2 & val_R2 & val_R1) == 1)
-		{
-			Stop();
 		}
 	}
 }
