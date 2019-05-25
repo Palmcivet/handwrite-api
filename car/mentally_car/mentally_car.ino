@@ -13,14 +13,14 @@ const int white = 0; // LOW
 
 // define PWM port.
 const int servo = 9;
-const int stepper_1 = 10; // HIGH
-const int stepper_2 = 11; // LOW
+const int stepper_1 = 2; // HIGH
+const int stepper_2 = 3; // LOW
 
 // define the digital port of sensor and the value of port.
-const int sensor_L1_D = 13;
-const int sensor_L2_D = 12;
-const int sensor_R2_D = 8;
-const int sensor_R1_D = 7;
+const int sensor_L1_D = 11;
+const int sensor_L2_D = 10;
+const int sensor_R2_D = 9;
+const int sensor_R1_D = 8;
 
 int val_L1_D;
 int val_L2_D;
@@ -50,28 +50,28 @@ int angle_chge;
 
 void superturnL()
 {
-	angle_chge = 50;
+	angle_chge = 60;
 	myservo.write(angle_chge);
 	analogWrite(stepper_1, 90);
 	Serial.println("superLeft");
 }
 void turnL()
 {
-	angle_chge = 70;
+	angle_chge = 75;
 	myservo.write(angle_chge);
 	analogWrite(stepper_1, 90);
 	Serial.println("Left");
 }
 void turnR()
 {
-	angle_chge = 110;
+	angle_chge = 105;
 	myservo.write(angle_chge);
 	analogWrite(stepper_1, 90);
 	Serial.println("Right");
 }
 void superturnR()
 {
-	angle_chge = 130;
+	angle_chge = 120;
 	myservo.write(angle_chge);
 	analogWrite(stepper_1, 90);
 	Serial.println("superRight");
