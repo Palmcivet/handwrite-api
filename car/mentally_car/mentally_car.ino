@@ -1,25 +1,26 @@
 /**
- * title: the Code to Mentally Car
+ * title: the Code for Mentally Car
  * author: Palm Civet
- * version: 1.1
- * Comment: 
+ * version: 1.2
+ * Comment:
  */
 #include <Servo.h>
-#define black 1		// HIGH
-#define white 0		// LOW
+#define black 1 // HIGH
+#define white 0 // LOW
 
 Servo myservo;
 
-// define PWM port.
-const int servo = 9;
-const int stepper_1 = 2; // HIGH
-const int stepper_2 = 3; // LOW
+//const int stepper_1 = 4;
+//const int stepper_2 = 5;
+
+// signal of servo.
+const int servo = 6;
 
 // define the digital port of sensor and the value of port.
-const int sensor_L1_D = 11;
-const int sensor_L2_D = 10;
-const int sensor_R2_D = 9;
 const int sensor_R1_D = 8;
+const int sensor_R2_D = 9;
+const int sensor_L2_D = 10;
+const int sensor_L1_D = 11;
 
 int val_L1_D;
 int val_L2_D;
@@ -40,8 +41,8 @@ int val_R1_A;
 
 // to verify the angles.
 const int angle_mid = 90;
-const int angle_left = 10;
-const int angle_right = 170;
+const int angle_left = 45;
+const int angle_right = 135;
 
 int angle_chge;
 
@@ -49,51 +50,53 @@ int angle_chge;
 
 void superturnL()
 {
-	angle_chge = 60;
+	angle_chge = 70;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 90);
 	Serial.println("superLeft");
 }
 void turnL()
 {
-	angle_chge = 75;
+	angle_chge = 80;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 90);
 	Serial.println("Left");
 }
 void turnR()
 {
-	angle_chge = 105;
+	angle_chge = 100;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 90);
 	Serial.println("Right");
 }
 void superturnR()
 {
-	angle_chge = 120;
+	angle_chge = 110;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 90);
 	Serial.println("superRight");
 }
 void strT()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 90);
 	Serial.println("Straight");
 }
 void Stop()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	analogWrite(stepper_1, 0);
+	analogWrite(servo, 0);
 	Serial.println("Stop");
 }
 
 void setup()
 {
-	pinMode(stepper_1, OUTPUT);
+	//pinMode(12, OUTPUT);
+	//digitalWrite(12, HIGH);
+	//digitalWrite(stepper_1, HIGH);
+	//digitalWrite(stepper_2, LOW);
+	pinMode(servo, OUTPUT);
 	myservo.attach(servo);
+	
+	strT();
+
 	pinMode(sensor_L1_D, INPUT);
 	pinMode(sensor_L2_D, INPUT);
 	pinMode(sensor_R2_D, INPUT);
@@ -105,14 +108,10 @@ void setup()
 	pinMode(sensor_R2_A, INPUT);
 	pinMode(sensor_R1_A, INPUT);
 	Serial.begin(9600);
-	
-	void strT();
 }
 
 void loop()
 {
-	analogWrite(stepper_1, 90);
-
 	val_L1_D = digitalRead(sensor_L1_D);
 	val_L2_D = digitalRead(sensor_L2_D);
 	val_R2_D = digitalRead(sensor_R2_D);
@@ -123,9 +122,6 @@ void loop()
 	val_L2_A = digitalRead(sensor_L2_A);
 	val_R2_A = digitalRead(sensor_R2_A);
 	val_R1_A = digitalRead(sensor_R1_A);
-
-	int a = 0;
-	int carstop = 0;
 
 	/* TCRT5000 红外对管传感器参数
      * 检测距离：1~25 mm
@@ -146,23 +142,23 @@ void loop()
 	{
 		if (val_L1_D == black)
 		{
-			superturnL();
+			turnL();
 		}
 		if (val_L2_D == black)
 		{
-			turnL();
+			superturnL();
 		}
 	}
 
 	if ((val_R2_D || val_R1_D) == black)
 	{
-		if (val_R1_D == black)
-		{
-			superturnR();
-		}
 		if (val_R2_D == black)
 		{
 			turnR();
+		}
+		if (val_R1_D == black)
+		{
+			superturnR();
 		}
 	}
 }
