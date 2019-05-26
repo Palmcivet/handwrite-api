@@ -1,15 +1,21 @@
 /**
  * title: the Code for Mentally Car
  * author: Palm Civet
- * version: 1.2
+ * version: 2.0
  * Comment:
  */
 #include <Servo.h>
-#include <Stepper.h>
+// #include <Stepper.h>
 #define black 1 // HIGH
 #define white 0 // LOW
 
+#define pwm_stop 0
+#define pwm_strt 90
+#define pwm_turnX 50
+#define pwm_superturnX 60
+
 Servo myservo;
+// Stepper myStepper = Stepper(90, 5, 6);
 
 // signal of steeper, use pwm.
 const int port_stepper = 6;
@@ -55,37 +61,42 @@ void superturnL()
 {
 	angle_chge = 70;
 	myservo.write(angle_chge);
+	analogWrite(val_servo, pwm_superturnX);
 	Serial.println("superLeft");
 }
 void turnL()
 {
 	angle_chge = 80;
 	myservo.write(angle_chge);
+	analogWrite(val_servo, pwm_turnX);
 	Serial.println("Left");
 }
 void turnR()
 {
 	angle_chge = 100;
 	myservo.write(angle_chge);
+	analogWrite(val_servo, pwm_turnX);
 	Serial.println("Right");
 }
 void superturnR()
 {
 	angle_chge = 110;
 	myservo.write(angle_chge);
+	analogWrite(val_servo, pwm_superturnX);
 	Serial.println("superRight");
 }
-void strT()
+void strt()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
+	analogWrite(val_servo, pwm_strt);
 	Serial.println("Straight");
 }
-void Stop()
+void stop()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, 0);
+	analogWrite(val_servo, pwm_stop);
 	Serial.println("Stop");
 }
 
@@ -96,7 +107,7 @@ void setup()
 	pinMode(port_servo, OUTPUT);
 	myservo.attach(port_servo);
 
-	strT();
+	strt();
 
 	pinMode(port_L1_D, INPUT);
 	pinMode(port_L2_D, INPUT);
@@ -136,7 +147,7 @@ void loop()
 
 	if ((val_L1_D & val_L2_D & val_R2_D & val_R1_D) == black)
 	{
-		Stop();
+		stop();
 	}
 
 	if ((val_L1_D || val_L2_D) == black)
