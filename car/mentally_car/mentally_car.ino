@@ -1,7 +1,7 @@
 /**
  * title: the Code for Mentally Car
  * author: Palm Civet
- * version: 2.1
+ * version: 2.4.1
  * Comment:
  */
 #include <Servo.h>
@@ -66,7 +66,7 @@ void setSpeed(int period, float percent)
 }
 void superturnL()
 {
-	angle_chge = 60;
+	angle_chge = 63;
 	myservo.write(angle_chge);
 	setSpeed(300, 0.5);
 	Serial.println("superLeft");
@@ -87,7 +87,7 @@ void turnR()
 }
 void superturnR()
 {
-	angle_chge = 120;
+	angle_chge = 117;
 	myservo.write(angle_chge);
 	setSpeed(300, 0.5);
 	Serial.println("superRight");
