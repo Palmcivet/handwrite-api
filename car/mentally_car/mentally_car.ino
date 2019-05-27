@@ -1,25 +1,24 @@
 /**
  * title: the Code for Mentally Car
  * author: Palm Civet
- * version: 2.0
+ * version: 2.1
  * Comment:
  */
 #include <Servo.h>
-// #include <Stepper.h>
 #define black 1 // HIGH
 #define white 0 // LOW
 
 #define pwm_stop 0
 #define pwm_strt 90
 #define pwm_turnX 50
-#define pwm_superturnX 60
+#define pwm_superturnX 70
 
 Servo myservo;
-// Stepper myStepper = Stepper(90, 5, 6);
 
-// signal of steeper, use pwm.
-const int port_stepper = 6;
-int val_stepper;
+const int port_stepperH = 5;
+const int port_stepperL = 6;
+
+int speed = 100;
 
 // signal of servo.
 const int port_servo = 7;
@@ -57,56 +56,72 @@ int angle_chge;
 
 // TODO above ===================
 
+void setSpeed(int period, float percent)
+{
+	if (percent > 100 || percent < 0)
+	{
+		return 0;
+	}
+	else
+	{
+		percent /= 100;
+	}
+	digitalWrite(port_stepperH, HIGH);
+	delay(period * percent);
+	digitalWrite(port_stepperH, LOW);
+	delay(period * (1 - percent));
+}
 void superturnL()
 {
 	angle_chge = 70;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_superturnX);
+	setSpeed(300, 70);
 	Serial.println("superLeft");
 }
 void turnL()
 {
 	angle_chge = 80;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_turnX);
+	setSpeed(300, 40);
 	Serial.println("Left");
 }
 void turnR()
 {
 	angle_chge = 100;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_turnX);
+	setSpeed(300, 40);
 	Serial.println("Right");
 }
 void superturnR()
 {
 	angle_chge = 110;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_superturnX);
+	setSpeed(300, 70);
 	Serial.println("superRight");
 }
 void strt()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_strt);
+	setSpeed(300, 50);
 	Serial.println("Straight");
 }
 void stop()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	analogWrite(val_servo, pwm_stop);
+	setSpeed(300, 0);
 	Serial.println("Stop");
 }
 
 void setup()
 {
-	//digitalWrite(stepper_1, HIGH);
-	//digitalWrite(stepper_2, LOW);
+	pinMode(port_stepperH, OUTPUT);
+	pinMode(port_stepperL, OUTPUT);
 	pinMode(port_servo, OUTPUT);
 	myservo.attach(port_servo);
 
+	// init the status.
 	strt();
 
 	pinMode(port_L1_D, INPUT);
