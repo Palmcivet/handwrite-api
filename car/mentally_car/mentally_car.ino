@@ -58,52 +58,45 @@ int angle_chge;
 
 void setSpeed(int period, float percent)
 {
-	if (percent > 100 || percent < 0)
-	{
-		return 0;
-	}
-	else
-	{
-		percent /= 100;
-	}
 	digitalWrite(port_stepperH, HIGH);
 	delay(period * percent);
 	digitalWrite(port_stepperH, LOW);
 	delay(period * (1 - percent));
+	digitalWrite(port_stepperH, HIGH);
 }
 void superturnL()
 {
-	angle_chge = 70;
+	angle_chge = 60;
 	myservo.write(angle_chge);
-	setSpeed(300, 70);
+	setSpeed(300, 0.5);
 	Serial.println("superLeft");
 }
 void turnL()
 {
-	angle_chge = 80;
+	angle_chge = 75;
 	myservo.write(angle_chge);
-	setSpeed(300, 40);
+	setSpeed(300, 0.4);
 	Serial.println("Left");
 }
 void turnR()
 {
-	angle_chge = 100;
+	angle_chge = 105;
 	myservo.write(angle_chge);
-	setSpeed(300, 40);
+	setSpeed(300, 0.4);
 	Serial.println("Right");
 }
 void superturnR()
 {
-	angle_chge = 110;
+	angle_chge = 120;
 	myservo.write(angle_chge);
-	setSpeed(300, 70);
+	setSpeed(300, 0.5);
 	Serial.println("superRight");
 }
 void strt()
 {
 	angle_chge = 90;
 	myservo.write(angle_chge);
-	setSpeed(300, 50);
+	setSpeed(300, 0.4);
 	Serial.println("Straight");
 }
 void stop()
@@ -169,11 +162,11 @@ void loop()
 	{
 		if (val_L1_D == black)
 		{
-			turnL();
+			turnR();
 		}
 		if (val_L2_D == black)
 		{
-			superturnL();
+			superturnR();
 		}
 	}
 
@@ -181,11 +174,11 @@ void loop()
 	{
 		if (val_R2_D == black)
 		{
-			turnR();
+			turnL();
 		}
 		if (val_R1_D == black)
 		{
-			superturnR();
+			superturnL();
 		}
 	}
 }

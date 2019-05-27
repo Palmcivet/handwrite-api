@@ -4,13 +4,13 @@ Servo myservo;
 
 void setup()
 {
-	pinMode(6, OUTPUT);
-	myservo.attach(6);
+	pinMode(7, OUTPUT);
+	myservo.attach(7);
   myservo.write(90);
 }
 
 void loop()
 {
-	myservo.write(90);
-	delay(500);
+	myservo.write(50);
+	//delay(500);
 }
