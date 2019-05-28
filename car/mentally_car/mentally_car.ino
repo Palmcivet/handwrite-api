@@ -59,10 +59,10 @@ int angle_chge;
 void setSpeed(int period, float percent)
 {
 	digitalWrite(port_stepperH, HIGH);
-	delay(period * percent);
-	digitalWrite(port_stepperH, LOW);
-	delay(period * (1 - percent));
-	digitalWrite(port_stepperH, HIGH);
+	// delay(period * percent);
+	// digitalWrite(port_stepperH, LOW);
+	// delay(period * (1 - percent));
+	// digitalWrite(port_stepperH, HIGH);
 }
 void superturnL()
 {
@@ -73,14 +73,14 @@ void superturnL()
 }
 void turnL()
 {
-	angle_chge = 75;
+	angle_chge = 80;
 	myservo.write(angle_chge);
 	setSpeed(300, 0.4);
 	Serial.println("Left");
 }
 void turnR()
 {
-	angle_chge = 105;
+	angle_chge = 100;
 	myservo.write(angle_chge);
 	setSpeed(300, 0.4);
 	Serial.println("Right");

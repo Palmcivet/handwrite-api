@@ -13,9 +13,7 @@ void setSpeed(int pin1, int pin2, int period, float percent)
     }
     digitalWrite(pin2, LOW);
     digitalWrite(pin1, HIGH);
-    delay(period * percent);
     digitalWrite(pin1, LOW);
-    delay(period * (1 - percent));
 }
 
 void setup()
@@ -25,11 +23,10 @@ void setup()
     pinMode(7, OUTPUT);
     myservo.attach(7);
     myservo.write(90);
+    digitalWrite(5, HIGH);
+    digitalWrite(6, LOW);
 }
 
 void loop()
 {
-    //setSpeed(5, 6, 100, 50);
-    setSpeed(5, 6, 500, 50);
-//    delay(500);
 }
