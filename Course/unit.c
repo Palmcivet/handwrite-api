@@ -5,8 +5,7 @@ int main()
     printf("=============== Example =================\n");
 
     char parameters[20];
-    scanf("%s", parameters);
-    if (!strcmp(parameters, "add") || !strcmp(&parameters[0], "a"))
-        printf("ok");
+    fgets(parameters, 20, stdin);
+    printf("%s", parameters);
     return 0;
 }
