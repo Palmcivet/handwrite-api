@@ -2,13 +2,14 @@
 /**
  * Project:16
  * Author: Palm Civet
+ * Date: 2019-6-28
  */
 
-#define COLUMN 64 // X-axis
+#define COLUMN 68 // X-axis
 #define ROW 36    // Y-axis
 #define MAX_PARAMETERS 5
 
-#define X_AXIS 32
+#define X_AXIS 34
 #define Y_AXIS 18
 
 char canvas[ROW][COLUMN];
@@ -17,59 +18,79 @@ char parameters[MAX_PARAMETERS * 2];
 int main()
 {
     help_print();
+    canvas_init();
 
-    if (parameters[0] < '1' || parameters[0] >= '5')
+    switch (parameters[0])
     {
-        printf("Invalid Parameter: Unselected Graph\n\n");
-    }
-    else
-    {
-        switch (parameters[1])
+    case '0':
+        return 0;
+    case '1':
+        if (!parameters_check(parameters, 2))
         {
-        case '0':
-            return 0;
-        case '1':
-            if (!parameters_check(parameters, 2))
+            for (int y = -Y_AXIS; y <= Y_AXIS; y++)
             {
-                canvas_draw();
+                for (int x = -X_AXIS; x <= X_AXIS; x++)
+                {
+                    if (y == (int)(parameters[2] - '0') * x + (int)(parameters[4] - '0'))
+                    {
+                        //printf("%d %d\n", x, y);
+                        //canvas_draw(y - Y_AXIS, X_AXIS + x);
+                        canvas_draw(Y_AXIS - x, X_AXIS + y);
+                    }
+                }
             }
-            break;
-        case '2':
-            if (!parameters_check(parameters, 2))
-                break;
-        case '3':
-            if (!parameters_check(parameters, 3))
-                break;
-        case '4':
-            if (!parameters_check(parameters, 2))
-                break;
-        case '5':
-            if (!parameters_check(parameters, 3))
-                break;
         }
-        show();
+        break;
+    case '2':
+        if (!parameters_check(parameters, 2))
+        {
+            int a = (int)(parameters[2] - '0');
+            int b = (int)(parameters[4] - '0');
+            for (int y = -Y_AXIS; y <= Y_AXIS; y++)
+            {
+                for (int x = -X_AXIS; x <= X_AXIS; x++)
+                {
+                    if (x * x + y * y == 49)
+                    //if (b * b * x * x + a * a * y * y == a * a * b * b)
+                    {
+                        printf("%d %d\n", x, y); //TODO: cancel comment
+                        canvas_draw(Y_AXIS - x, X_AXIS + y);
+                    }
+                }
+            }
+        }
+        break;
+    case '3':
+        if (!parameters_check(parameters, 3))
+            break;
+    case '4':
+        if (!parameters_check(parameters, 2))
+            break;
+    case '5':
+        if (!parameters_check(parameters, 3))
+            break;
+    default:
+        printf("Invalid Parameter: Unselected Graph\n\n");
+        break;
     }
-    //help_print(); //TODO: Test
+    show();
+    //help_print(); //TODO: cancel comment
 }
 
-int parameters_check(int *para, int para_num)
+int parameters_check(int *para, int para_num) //!!! Can't Modify
 {
     int i = 1;
     while (i <= para_num)
     {
-        if (*(para + 2 * i) == '\0')
+        if (*(parameters + 2 * i) == '\0')
         {
             printf("Invalid Parameter: Missing Parameters\n\n");
             return 1;
         }
-        else if (*(para + 2 * i) <= '0')
+        else if (*(parameters + 2 * i) <= '0')
         {
             printf("Invalid Parameter: Unvalidated Parameter\n\n");
             return 1;
-        }
-        else
-        {
-            printf("Invalid Input\n\n");
         }
         i++;
     }
@@ -87,7 +108,7 @@ int help_print()
     printf("5) Trapezoid:\ta\tb\th\n");
     printf("\n");
     printf("Example:\n");
-    printf("Graph>> 5 5 8 4\n");
+    printf("Graph>> 5 0,5 0,8 4,5 2,8\n");
     printf("========================================\n");
     printf("\n");
     printf("Graph>> ");
@@ -95,7 +116,7 @@ int help_print()
     return 0;
 }
 
-void canvas_init()
+int canvas_init()
 {
     for (int x = 0; x < ROW; x++)
     {
@@ -111,6 +132,7 @@ void canvas_init()
             }
         }
     }
+    return 0;
 }
 
 int canvas_draw(int x, int y)
@@ -131,6 +153,10 @@ int canvas_print()
             if (j == 0 || j == COLUMN * 2)
             {
                 printf(" |");
+            }
+            else if ((i == Y_AXIS + 1) && (j == COLUMN + 2))
+            {
+                printf(" o");
             }
             else
             {
@@ -156,11 +182,9 @@ int border_print()
 
 int show()
 {
-    canvas_init();
     border_print();
     canvas_print();
     border_print();
-    printf("\n");
     return 0;
 }
 
