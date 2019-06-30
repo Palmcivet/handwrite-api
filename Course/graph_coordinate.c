@@ -19,16 +19,7 @@
 #define ADD 2
 
 char canvas[ROW][COLUMN];
-char parameters[MAX_PARAMETERS * 2];
-
-int main()
-{
-    canvas_init();
-    //strcpy(parameters, "help");
-    wizard(OPERATION, parameters);
-    parameters_handle(parameters);
-    return 0;
-}
+char parameters[MAX_PARAMETERS * 2] = {0};
 
 int wizard(int flag, char *args)
 {
@@ -66,7 +57,6 @@ int wizard(int flag, char *args)
         printf("\n");
         printf("Select an operation:\n");
         printf("Graph>> ");
-        //scanf("%s", parameters);
         scanf("%s", args);
     }
     else if (flag == ADD)
@@ -77,16 +67,16 @@ int wizard(int flag, char *args)
         printf("=====================================================================\n");
         printf("\n");
         printf("Input type and parameters:\n");
+        printf("c 1,2 5,8 4,1\n");
         printf("Graph>> ");
-        //scanf("%s", args);
+        getchar();
         fgets(args, MAX_PARAMETERS, stdin);
-        printf("\ncatching: %s\n", args); //TODO: delete
     }
     return 0;
 }
 
 // Core code
-int parameters_handle(int *parameters)
+int parameters_handle(char *parameters)
 {
     while (strcmp(parameters, "exit") && strcmp(parameters, "quit") && strcmp(&parameters[0], "e") && strcmp(&parameters[0], "q"))
     {
@@ -103,32 +93,37 @@ int parameters_handle(int *parameters)
         else if (!strcmp(parameters, "add") || !strcmp(&parameters[0], "a"))
         {
             wizard(ADD, parameters);
-            if (!strcmp(&parameters[0], "l")) // line
+            if (parameters[0] == 'l') // line
             {
                 if ((parameters[2] != '\0') && (parameters[4] != '\0'))
                 {
-                    gen_line((parameters[2]), parameters[4]);
+                    gen_line((parameters[2] - '0'), (parameters[4] - '0'));
                 }
                 else
                 {
                     printf("Invalid Parameter: Missing Arguments!\n\n");
                 }
             }
-            else if (!strcmp(&parameters[0], "c")) // coordinate
+            else if (parameters[0] == 'c') // coordinate
             {
                 int i = 4;
                 while (parameters[2 * i] != '\0')
                 {
+                    printf("print: %d\n", parameters[2 * i] - '0');
                     //gen_segment(parameters[2 * i], parameters[2 * i + 2], parameters[2 * 1 + 4], parameters[2 * i + 8]);
-                    gen_segment(parameters[2 * i - 6], parameters[2 * i - 4], parameters[2 * 1 - 2], parameters[2 * i]);
+                    gen_segment(parameters[2 * i - 6] - '0', parameters[2 * i - 4] - '0', parameters[2 * i - 2] - '0', parameters[2 * i] - '0');
+                    printf("error\n");
                     i += 2;
+                    printf("==========================%d\n", i);
                 }
-                gen_segment(parameters[2 * i], parameters[2 * i], parameters[2], parameters[4]);
+                i -= 2;
+                //gen_segment(parameters[2 * i - 2] - '0', parameters[2 * i] - '0', parameters[2] - '0', parameters[4] - '0');
+                printf("==========================%d\n", i / 2 + 1);
             }
             else
             {
                 printf("Invalid Parameter: Unvalidated Arguments!\n\n");
-                //return 0;
+                wizard(OPERATION, parameters);
                 continue;
             }
             canvas_print();
@@ -145,14 +140,13 @@ int parameters_handle(int *parameters)
 
 int gen_line(int a, int b)
 {
-    //for (int y = -Y_AXIS; y <= Y_AXIS; y++)
     for (int y = -Y_AXIS; y <= Y_AXIS; y++)
     {
         for (int x = -X_AXIS; x <= X_AXIS; x++)
         {
             if (y == a * x + b)
             {
-                printf("%d %d\n", x, y); //TODO: cancel comment
+                //printf("%d %d\n", x, y); //TODO: cancel comment
                 canvas_draw(Y_AXIS - x, X_AXIS + y);
             }
         }
@@ -171,7 +165,7 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
         {
             if (y == a * x + b)
             {
-                printf("%d %d\n", x, y); //TODO: cancel comment
+                //printf("%d %d\n", x, y); //TODO: cancel comment
                 canvas_draw(Y_AXIS - x, X_AXIS + y);
             }
         }
@@ -247,5 +241,14 @@ int canvas_print()
     }
     printf(" +");
     printf("\n");
+    return 0;
+}
+
+int main()
+{
+    canvas_init();
+    //strcpy(parameters, "help");
+    wizard(OPERATION, parameters);
+    parameters_handle(parameters);
     return 0;
 }
