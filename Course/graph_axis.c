@@ -22,7 +22,7 @@ int main()
         for (int x = -X_AXIS; x < X_AXIS; x++)
         {
             //if (y == parameters[2] * x + parameters[4])
-            if (y == 2 * x + 1)
+            if (y == -2 * x + 1)
             {
                 printf("%d %d\n", x, y);
                 //printf("%d %d\n", y, ROW - x);

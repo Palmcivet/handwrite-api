@@ -46,15 +46,15 @@ int main()
         {
             int a = (int)(parameters[2] - '0');
             int b = (int)(parameters[4] - '0');
+            // blow are for a don't exist
             for (int y = -Y_AXIS; y <= Y_AXIS; y++)
             {
                 for (int x = -X_AXIS; x <= X_AXIS; x++)
                 {
-                    if (x * x + y * y == 49)
-                    //if (b * b * x * x + a * a * y * y == a * a * b * b)
+                    if (b == x)
                     {
-                        printf("%d %d\n", x, y); //TODO: cancel comment
-                        canvas_draw(Y_AXIS - x, X_AXIS + y);
+                        printf("%d %d\n", y, x); //TODO: cancel comment
+                        canvas_draw(Y_AXIS - y, X_AXIS + b);
                     }
                 }
             }

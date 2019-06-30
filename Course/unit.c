@@ -6,6 +6,7 @@ int main()
 
     char parameters[20];
     fgets(parameters, 20, stdin);
-    printf("%s", parameters);
+    printf("%s\n", parameters);
+    printf("%d %d\n", '-' - '0', ' ' - '0');
     return 0;
 }
