@@ -108,6 +108,7 @@ int wizard(int flag, char *args)
 		printf("Graph>> a\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
+		printf("2) Oval\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
 		printf("Graph>> l x1,y1 x2,y2 x3,y3 ...\n");
@@ -136,6 +137,7 @@ int wizard(int flag, char *args)
 		printf("=============== Arguments ==============\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
+		printf("2) Oval\n");
 		printf("=====================================================================\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
@@ -153,11 +155,9 @@ int gen_line(int a, int b)
 	{
 		for (int x = -X_AXIS; x <= X_AXIS; x++)
 		{
+			// Can't Modified!!!
 			if (y == a * x + b)
-			{
-				// Can't Modified!!!
 				canvas_draw(Y_AXIS - y, X_AXIS + x);
-			}
 		}
 	}
 	return 0;
@@ -167,7 +167,6 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 {
 	// process the raw data
 	// aim: x_1 < x_2 and y_1<y_2
-	printf("before: %d %d %d %d\n", x_1, y_1, x_2, y_2); //TODO: cancel comment
 	if ((x_1 > x_2) || (y_1 > y_2))
 	{
 		int temp = 0;
@@ -179,7 +178,6 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 		temp = y_2;
 		y_2 = y_1;
 		y_1 = temp;
-		printf("after: %d %d %d %d\n", x_1, y_1, x_2, y_2); //TODO: cancel comment
 	}
 
 	// a don't exist
@@ -188,7 +186,6 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 		// blow are for the condition that a don't exist
 		for (int y = y_1; y <= y_2; y++)
 		{
-			printf("y: %d x: %d\n", y, x_1); //TODO: cancel comment
 			canvas_draw(Y_AXIS - y, X_AXIS + x_1);
 		}
 	}
@@ -196,18 +193,28 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 	{
 		float a = (float)(y_2 - y_1) / (x_2 - x_1);
 		float b = (float)(-x_1) * (y_2 - y_1) / (x_2 - x_1) + y_1;
-		printf("a: %f b: %f\n", a, b); //TODO: cancel comment
 		for (int y = y_1; y <= y_2; y++)
 		{
 			for (int x = x_1; x <= x_2; x++)
 			{
 				if (y == a * x + b)
-				{
-					//printf("Enter\n"); //TODO: cancel comment
-					printf("y: %d x: %d\n", y, x); //TODO: cancel comment
-					//canvas_draw(Y_AXIS - y + 1, X_AXIS + x - 1);
 					canvas_draw(Y_AXIS - y, X_AXIS + x);
-				}
+			}
+		}
+	}
+	return 0;
+}
+
+int gen_oval(int a, int b)
+{
+	for (float y = -Y_AXIS; y <= Y_AXIS; y += 0.1)
+	{
+		for (float x = -X_AXIS; x <= X_AXIS; x += 0.1)
+		{
+			if (x * x / a / a + y * y / b / b == 1.0)
+			//if (y * y == b * b - b * b / a / a * x * x)
+			{
+				printf("y: %f x: %f\n", y, x);
 			}
 		}
 	}
@@ -231,12 +238,15 @@ int parameters_handle(char *parameters)
 		}
 		else if (!strcmp(parameters, "add") || !strcmp(&parameters[0], "a"))
 		{
+			//parameters = NULL;
 			wizard(ADD, parameters);
 			if (parameters[0] == 'l') // line
 			{
-				if ((parameters[2] != '\0') && (parameters[4] != '\0'))
+				//if ((parameters[2] != '\0') && (parameters[4] != '\0'))
+				if ((parameters[2] >= '0' && parameters[2] <= '9') && (parameters[4] >= '0' && parameters[4] <= '9'))
 				{
 					gen_line((parameters[2] - '0'), (parameters[4] - '0'));
+					canvas_print();
 				}
 				else
 				{
@@ -249,12 +259,28 @@ int parameters_handle(char *parameters)
 				while (parameters[2 * i] != '\0')
 				{
 					gen_segment(parameters[2 * i - 6] - '0', parameters[2 * i - 4] - '0', parameters[2 * i - 2] - '0', parameters[2 * i] - '0');
-					//printf("close ==== %d %d\n", parameters[2 * i - 6] - '0', parameters[2 * i - 4] - '0');
 					i += 2;
 				}
 				i -= 2;
 				gen_segment(parameters[2 * i - 2] - '0', parameters[2 * i] - '0', parameters[2] - '0', parameters[4] - '0');
-				//printf("close ==== %d %d\n", parameters[2 * i - 2] - '0', parameters[2 * i] - '0');
+				canvas_print();
+			}
+			else if (parameters[0] == 'o') // oval
+			{
+				/**example:
+				 * 0_123_124
+				 * 012345678
+				 */
+				gen_oval(25, 25);
+				//if ((parameters[2] != '\0') && (parameters[] != '\0'))
+				//{
+				//	gen_oval((parameters[2] - '0'), (parameters[4] - '0'));
+				//}
+				//else
+				//{
+				//	printf("Invalid Parameter: Missing Arguments!\n\n");
+				//}
+				//canvas_print();
 			}
 			else
 			{
@@ -262,7 +288,6 @@ int parameters_handle(char *parameters)
 				wizard(OPERATION, parameters);
 				continue;
 			}
-			canvas_print();
 			wizard(OPERATION, parameters);
 		}
 		else
