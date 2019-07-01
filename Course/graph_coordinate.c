@@ -108,7 +108,6 @@ int wizard(int flag, char *args)
 		printf("Graph>> a\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
-		printf("2) Oval\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
 		printf("Graph>> l x1,y1 x2,y2 x3,y3 ...\n");
@@ -137,7 +136,6 @@ int wizard(int flag, char *args)
 		printf("=============== Arguments ==============\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
-		printf("2) Oval\n");
 		printf("=====================================================================\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
@@ -205,22 +203,6 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 	return 0;
 }
 
-int gen_oval(int a, int b)
-{
-	for (float y = -Y_AXIS; y <= Y_AXIS; y += 0.1)
-	{
-		for (float x = -X_AXIS; x <= X_AXIS; x += 0.1)
-		{
-			if (x * x / a / a + y * y / b / b == 1.0)
-			//if (y * y == b * b - b * b / a / a * x * x)
-			{
-				printf("y: %f x: %f\n", y, x);
-			}
-		}
-	}
-	return 0;
-}
-
 // Core code
 int parameters_handle(char *parameters)
 {
@@ -238,7 +220,7 @@ int parameters_handle(char *parameters)
 		}
 		else if (!strcmp(parameters, "add") || !strcmp(&parameters[0], "a"))
 		{
-			//parameters = NULL;
+			memset(parameters, ' ', MAX_PARAMETERS);
 			wizard(ADD, parameters);
 			if (parameters[0] == 'l') // line
 			{
@@ -255,32 +237,25 @@ int parameters_handle(char *parameters)
 			}
 			else if (parameters[0] == 'c') // coordinate
 			{
-				int i = 4;
-				while (parameters[2 * i] != '\0')
+				int length = 0;
+				for (int valid = 0; parameters[2 * valid] != '\0'; valid++)
+				{
+					if (parameters[2 * valid] < '0' && parameters[2 * valid] >= '9')
+					{
+						break;
+					}
+					else
+					{
+						length = valid;
+					}
+				}
+				printf("%d\n", length);
+				for (int i = 4; i <= length; i += 2)
 				{
 					gen_segment(parameters[2 * i - 6] - '0', parameters[2 * i - 4] - '0', parameters[2 * i - 2] - '0', parameters[2 * i] - '0');
-					i += 2;
 				}
-				i -= 2;
-				gen_segment(parameters[2 * i - 2] - '0', parameters[2 * i] - '0', parameters[2] - '0', parameters[4] - '0');
+				gen_segment(parameters[2 * length - 2] - '0', parameters[2 * length] - '0', parameters[2] - '0', parameters[4] - '0');
 				canvas_print();
-			}
-			else if (parameters[0] == 'o') // oval
-			{
-				/**example:
-				 * 0_123_124
-				 * 012345678
-				 */
-				gen_oval(25, 25);
-				//if ((parameters[2] != '\0') && (parameters[] != '\0'))
-				//{
-				//	gen_oval((parameters[2] - '0'), (parameters[4] - '0'));
-				//}
-				//else
-				//{
-				//	printf("Invalid Parameter: Missing Arguments!\n\n");
-				//}
-				//canvas_print();
 			}
 			else
 			{

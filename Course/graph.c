@@ -142,7 +142,6 @@ int wizard(int flag, char *args)
 		printf("=====================================================================\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
-		printf("c 1,2 5,8 4,1\n");
 		printf("Graph>> ");
 		getchar();
 		fgets(args, MAX_PARAMETERS, stdin);
