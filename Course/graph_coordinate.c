@@ -22,6 +22,20 @@
 char canvas[ROW][COLUMN];
 char parameters[MAX_PARAMETERS * 2] = {0};
 
+char *substring(char *ch, int pos, int length)
+{
+	char *pch = ch;
+	char *subch = (char *)calloc(sizeof(char), length + 1);
+	int i;
+	pch = pch + pos;
+	for (i = 0; i < length; i++)
+	{
+		subch[i] = *(pch++);
+	}
+	subch[length] = '\0';
+	return subch;
+}
+
 int canvas_init()
 {
 	for (int y = 0; y <= ROW; y++)
@@ -108,6 +122,7 @@ int wizard(int flag, char *args)
 		printf("Graph>> a\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
+		printf("2) Oval\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
 		printf("Graph>> l x1,y1 x2,y2 x3,y3 ...\n");
@@ -136,6 +151,7 @@ int wizard(int flag, char *args)
 		printf("=============== Arguments ==============\n");
 		printf("0) Line\n");
 		printf("1) Coordinate\n");
+		printf("2) Oval\n");
 		printf("=====================================================================\n");
 		printf("\n");
 		printf("Input type and parameters:\n");
@@ -203,6 +219,27 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 	return 0;
 }
 
+int gen_oval(float a, float b)
+{
+	for (float y = -Y_AXIS; y <= Y_AXIS; y += 1)
+	//for (int y = -Y_AXIS; y <= Y_AXIS; y++)
+	{
+		for (float x = -X_AXIS; x <= X_AXIS; x += 0.1)
+		//for (int x = -X_AXIS; x <= X_AXIS; x++)
+		{
+			//if (y * y / a / a + x * x / b / b == 1)
+			if (y * y / a / a + x * x / b / b == 1.0)
+			{
+				printf("%f %f\n", y, x);
+				//printf("%d*%d/a/a + %d*%d/b/b\n", y, y, x, x);
+				canvas_draw(Y_AXIS - (int)y, X_AXIS + (int)x);
+				//canvas_draw(Y_AXIS - y, X_AXIS + x);
+			}
+		}
+	}
+	return 0;
+}
+
 // Core code
 int parameters_handle(char *parameters)
 {
@@ -224,7 +261,6 @@ int parameters_handle(char *parameters)
 			wizard(ADD, parameters);
 			if (parameters[0] == 'l') // line
 			{
-				//if ((parameters[2] != '\0') && (parameters[4] != '\0'))
 				if ((parameters[2] >= '0' && parameters[2] <= '9') && (parameters[4] >= '0' && parameters[4] <= '9'))
 				{
 					gen_line((parameters[2] - '0'), (parameters[4] - '0'));
@@ -256,6 +292,19 @@ int parameters_handle(char *parameters)
 				}
 				gen_segment(parameters[2 * length - 2] - '0', parameters[2 * length] - '0', parameters[2] - '0', parameters[4] - '0');
 				canvas_print();
+			}
+			else if (parameters[0] == 'o')
+			{
+				/**
+				 * o -34 -67 => 3
+				 * o 098 hjl
+				 */
+				if (atol(substring(parameters, 2, 3)) != 0.0 && 0.0 != atol(substring(parameters, 6, 3)))
+				{
+					printf("raw data: %ld %ld\n", atol(substring(parameters, 2, 3)), atol(substring(parameters, 6, 3)));
+					gen_oval(atof(substring(parameters, 2, 3)), atof(substring(parameters, 6, 3)));
+					canvas_print();
+				}
 			}
 			else
 			{

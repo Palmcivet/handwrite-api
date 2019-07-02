@@ -118,7 +118,7 @@ int wizard(int flag, char *args)
 		printf("\n");
 		printf("Now select an operation:\n");
 		printf("Graph>> ");
-		scanf("%s", args);
+		scanf_s("%s", args);
 	}
 	else if (flag == OPERATION)
 	{
@@ -132,7 +132,7 @@ int wizard(int flag, char *args)
 		printf("\n");
 		printf("Select an operation:\n");
 		printf("Graph>> ");
-		scanf("%s", args);
+		scanf_s("%s", args);
 	}
 	else if (flag == ADD)
 	{
