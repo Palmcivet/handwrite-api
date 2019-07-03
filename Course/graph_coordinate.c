@@ -22,6 +22,19 @@
 char canvas[ROW][COLUMN];
 char parameters[MAX_PARAMETERS * 2] = {0};
 
+void CirclePoints(int y, int x)
+{
+	//CirclePoints(Y_AXIS - y,  + x);
+	canvas_draw(Y_AXIS + x, X_AXIS + y);
+	canvas_draw(Y_AXIS + x, X_AXIS - y);
+	canvas_draw(Y_AXIS - x, X_AXIS + y);
+	canvas_draw(Y_AXIS - x, X_AXIS - y);
+	canvas_draw(Y_AXIS + y, X_AXIS + x);
+	canvas_draw(Y_AXIS + y, X_AXIS - x);
+	canvas_draw(Y_AXIS - y, X_AXIS + x);
+	canvas_draw(Y_AXIS - y, X_AXIS - x);
+}
+
 char *substring(char *ch, int pos, int length)
 {
 	char *pch = ch;
@@ -219,16 +232,45 @@ int gen_segment(int x_1, int y_1, int x_2, int y_2)
 	return 0;
 }
 
+void gen_circle(int r)
+{
+	// ugly circle
+	// 中点画圆法
+	int x, y;
+	double d;
+
+	x = 0;
+	y = r;
+	d = 1.25 - r;
+	while (x < y)
+	{
+		if (d < 0)
+		{
+			d = d + 2 * x + 3;
+		}
+		else
+		{
+			d = d + 2 * (x - y) + 5;
+			y--;
+		}
+		x++;
+		printf("after: %d %d\n", x, y);
+		//canvas_draw(Y_AXIS - y, X_AXIS + x);
+		CirclePoints(x, y);
+		//CirclePoints(x, y);
+	}
+}
+
 int gen_oval(float a, float b)
 {
 	for (float y = -Y_AXIS; y <= Y_AXIS; y += 1)
 	//for (int y = -Y_AXIS; y <= Y_AXIS; y++)
 	{
-		for (float x = -X_AXIS; x <= X_AXIS; x += 0.1)
+		for (float x = -X_AXIS; x <= X_AXIS; x += 1)
 		//for (int x = -X_AXIS; x <= X_AXIS; x++)
 		{
 			//if (y * y / a / a + x * x / b / b == 1)
-			if (y * y / a / a + x * x / b / b == 1.0)
+			if (y * y + x * x == a * b)
 			{
 				printf("%f %f\n", y, x);
 				//printf("%d*%d/a/a + %d*%d/b/b\n", y, y, x, x);
@@ -299,10 +341,15 @@ int parameters_handle(char *parameters)
 				 * o -34 -67 => 3
 				 * o 098 hjl
 				 */
-				if (atol(substring(parameters, 2, 3)) != 0.0 && 0.0 != atol(substring(parameters, 6, 3)))
+				//if (atol(substring(parameters, 2, 3)) != 0.0 && 0.0 != atol(substring(parameters, 6, 3)))
+				//{
+				//	gen_oval(atof(substring(parameters, 2, 3)), atof(substring(parameters, 6, 3)));
+				//	canvas_print();
+				//}
+
+				if (atol(substring(parameters, 2, 2)) != 0.0)
 				{
-					printf("raw data: %ld %ld\n", atol(substring(parameters, 2, 3)), atol(substring(parameters, 6, 3)));
-					gen_oval(atof(substring(parameters, 2, 3)), atof(substring(parameters, 6, 3)));
+					gen_circle(atof(substring(parameters, 2, 2)));
 					canvas_print();
 				}
 			}
