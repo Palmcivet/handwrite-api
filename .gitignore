@@ -1,2 +1,5 @@
 .DS_Store
-aim.md
+instruction.md
+node_modules/
+yarn.lock
+dist/
