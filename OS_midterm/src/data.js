@@ -1,14 +1,17 @@
 /**
  * 
- * @param {String} method - dynamic or static
+ * @param {String} method - absolute/reload/dynamic
  * @return {Array}
  */
 let Program = (method) => {
     let base = null
-    if (method == "dynamic") {
+    if (method == "absolute") {
         base = 0x00400000
     }
-    else if (method == "static") {
+    else if (method == "reload") {
+        base = 0x0
+    }
+    else if (method == "dynamic") {
         base = 0x0
     }
     else {

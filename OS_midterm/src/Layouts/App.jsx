@@ -1,11 +1,13 @@
 import React from 'react'
 import { Program } from '../data'
 import { Memory } from './Memory'
-
-let proc = Program("static")
+import { Load } from './Load'
 
 const App = () => (
-    <Memory props={proc} />
+    <div>
+        <Memory props={Program("absolute")} />
+        <Load />
+    </div>
 )
 
 export { App }
