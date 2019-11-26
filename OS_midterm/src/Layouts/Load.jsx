@@ -1,40 +1,55 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
+import GridList from '@material-ui/core/GridList'
+import GridListTile from '@material-ui/core/GridListTile'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import { Memory } from '../Components/Memory'
+import { LoadButton } from '../Components/LoadButton'
+import { Program } from '../data'
 
-class Load extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            method: 'absolute'
-        }
-        this.onChange = this.onChange.bind(this)
-    }
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    gridList: {
+        width: 500,
+        height: "80%",
+    },
+    paper: {
+        padding: theme.spacing(3),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}))
 
-    onChange(e) {
-        this.setState({
-            method: e.target.value
-        })
-        console.log('checked:', e.target.value);
-    }
+const Load = () => {
+    const classes = useStyles()
 
-    render() {
-        return (
-            <Grid item>
-                <ButtonGroup style={{ marginTop: 26 }} onClick={this.onChange} defaultValue="absolute"
-                    variant="text"
-                    color="secondary"
-                    size="large"
-                    aria-label="large contained secondary button group"
-                >
-                    <Button value="absolute">绝对装入</Button>
-                    <Button value="reload">可重定位装入</Button>
-                    <Button value="dynamic">动态装入</Button>
-                </ButtonGroup>
+    return (
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs>
+                    <GridList cellHeight={"auto"} className={classes.gridList}>
+                        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+                            <ListSubheader component="div">内存示意图</ListSubheader>
+                        </GridListTile>
+                        <Grid item xs>
+                            <Paper className={classes.paper}>
+                                <Memory props={Program("absolute")} />
+                            </Paper>
+                        </Grid>
+                    </GridList>
+                </Grid>
+                <Grid item xs>
+                    <Paper className={classes.paper}>
+                        <LoadButton />
+                    </Paper>
+                </Grid>
             </Grid>
-        )
-    }
+        </div>
+    );
 }
 
 export { Load }

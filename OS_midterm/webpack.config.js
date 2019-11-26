@@ -26,7 +26,10 @@ module.exports = {
     devServer: {
         port: 8081,
         open: true,
-        contentBase: path.join(__dirname, "dist")
+        contentBase: path.join(__dirname, "dist"),
+        proxy: {
+            '/': 'http://localhost:8081/index.bundle.html'
+        }
     },
     module: {
         rules: [
