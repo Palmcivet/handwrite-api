@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Styles/memory.less'
+import './Memory.less'
 
 let id = 0;
 /**
@@ -9,14 +9,16 @@ const Memory = (array) => {
     const code = array.props;
     const Li = code.map((data) => (
         data.map((ins) => (
-            <li key={id++} className="memory-grid">
+            <li key={id++} className="styleGrid">
                 {ins}
             </li>
         ))
     ))
 
     return (
-        <ul>{Li}</ul>
+            <div className="styleBox">
+                <ul>{Li}</ul>
+            </div>
     )
 }
 

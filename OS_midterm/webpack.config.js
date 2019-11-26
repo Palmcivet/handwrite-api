@@ -26,13 +26,16 @@ module.exports = {
     devServer: {
         port: 8081,
         open: true,
-        proxy: 'http://localhost:3000'
+        contentBase: path.join(__dirname, "dist")
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.js[x]?$/,
                 exclude: /node_modules/,
-                use: ['babel-loader']
+                use: {
+                    loader: 'babel-loader'
+                }
             },
             {
                 test: /\.less$/,

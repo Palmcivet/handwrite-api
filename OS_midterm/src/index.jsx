@@ -1,8 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { App } from './Layouts/App'
+import { SPA } from './Layouts/SPA'
 
 render(
-    <App />,
+    <SPA />,
     document.getElementById('root')
 )

@@ -1,38 +1,38 @@
 import React, { Component } from 'react'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 class Load extends Component {
     constructor(props) {
         super(props)
-        this.handleSwitch = this.handleSwitch.bind(this)
         this.state = {
-            method={
-                absolute: true,
-                reload: false,
-                dynamic: false
-            }
+            method: 'absolute'
         }
+        this.onChange = this.onChange.bind(this)
     }
 
-    handleSwitch(event) {
-        this.setState({  })
-        console.log(this.state.method)
+    onChange(e) {
+        this.setState({
+            method: e.target.value
+        })
+        console.log('checked:', e.target.value);
     }
 
     render() {
         return (
-            <div>
-                <label>选择装入方式：</label>
-                <br />
-                <label>
-                    <input type="radio" value="绝对装入" checked={this.state.method.absolute} onChange={this.handleSwitch} />绝对装入
-                </label>
-                <label>
-                    <input type="radio" value="可重定位装入" checked={this.state.method.reload} onChange={this.handleSwitch} />可重定位装入
-                </label>
-                <label>
-                    <input type="radio" value="动态装入" checked={this.state.method.dynamic} onChange={this.handleSwitch} />动态装入
-                </label>
-            </div>
+            <Grid item>
+                <ButtonGroup style={{ marginTop: 26 }} onClick={this.onChange} defaultValue="absolute"
+                    variant="text"
+                    color="secondary"
+                    size="large"
+                    aria-label="large contained secondary button group"
+                >
+                    <Button value="absolute">绝对装入</Button>
+                    <Button value="reload">可重定位装入</Button>
+                    <Button value="dynamic">动态装入</Button>
+                </ButtonGroup>
+            </Grid>
         )
     }
 }
