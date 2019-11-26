@@ -73,21 +73,12 @@ const NavBar = () => {
                     onChange={handleChange}
                     aria-label="nav tabs example"
                 >
-                    <LinkTab label="Home" href="/" {...a11yProps(0)} />
-                    <LinkTab label="Page One" href="/drafts" {...a11yProps(0)} />
-                    <LinkTab label="Page Two" href="/trash" {...a11yProps(1)} />
-                    <LinkTab label="Page Three" href="/spam" {...a11yProps(2)} />
+                    <LinkTab label="Home"></LinkTab>
+                    <LinkTab label="Load" />
+                    <LinkTab label="Home" />
+                    <LinkTab label="About" />
                 </Tabs>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                Page One
-      </TabPanel>
-            <TabPanel value={value} index={1}>
-                Page Two
-      </TabPanel>
-            <TabPanel value={value} index={2}>
-                Page Three
-      </TabPanel>
         </div>
     )
 }
