@@ -1,5 +1,4 @@
 .DS_Store
-instruction.md
 node_modules/
 yarn.lock
 dist/
