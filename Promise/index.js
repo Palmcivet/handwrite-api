@@ -21,28 +21,32 @@ class TinyPromise {
 
 	onRejectedQueue = [];
 
+	handleReady(queue, val) {
+		if (queue.length <= 0) return;
+
+		queueMicrotask(() => {
+			try {
+				val = queue.shift()(val);
+				this.handleReady(queue, val);
+			} catch (err) {
+				this.reject(err);
+			}
+		});
+	}
+
 	resolve(value) {
 		if (this.status === PENDING) {
 			this.status = FULFILLED;
 			this.value = value;
-			while (this.onFullfilledQueue.length > 0) {
-				try {
-					this.value = this.onFullfilledQueue.shift()(this.value);
-				} catch (err) {
-					this.reject(err);
-				}
-			}
+			this.handleReady(this.onFullfilledQueue, this.value);
 		}
 	}
 
 	reject(error) {
 		if (this.status === PENDING) {
-			console.log(error);
 			this.status = REJECTED;
 			this.error = error;
-			while (this.onRejectedQueue.length > 0) {
-				this.error = this.onRejectedQueue.shift()(this.error);
-			}
+			this.handleReady(this.onRejectedQueue, this.error);
 		}
 	}
 
