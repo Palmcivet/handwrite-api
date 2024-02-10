@@ -1,0 +1,36 @@
+@import '../Styles/default.less';
+
+@media screen and (min-width: 500px) {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+@media screen and (min-width : 350px) {
+    .memory-Box {
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+
+        ul {
+            padding-inline-start: 0px;
+            padding             : 3px;
+            color               : @text-color;
+            width               : 370px;
+            border              : 2px solid rgb(223, 41, 41);
+            border-radius       : 4px;
+
+            li.memory-grid {
+                list-style   : none;
+                width        : auto;
+                padding      : 2px;
+                font-size    : 1rem;
+                text-align   : center;
+                font-family  : 'Monaco', 'PingFang SC', Courier, monospace;
+                border-bottom: 1px solid rgba(224, 224, 224, 1);
+            }
+
+            li.memory-grid:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+}
